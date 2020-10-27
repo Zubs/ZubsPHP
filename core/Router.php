@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Core;
+
 /**
  * @author Zubs <zubairidrisaweda@gmail.com>
  * @package App\Core
