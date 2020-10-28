@@ -8,8 +8,15 @@ namespace App\Core;
  */
 class Router
 {
-	function __construct(argument)
+	protected array $routes = [];
+
+	public function get($route, $callback)
 	{
-		# code...
+		$this->routes['get'][$route] = $callback;
+	}
+
+	public function resolve($value='')
+	{
+		var_dump($_SERVER['REQUEST_URI']);
 	}
 }
