@@ -13,11 +13,10 @@ class Router
     public Request $request;
     protected array $routes = [];
 
-    public function __construct()
+    public function __construct(Request $request)
     {
-        $this->request = new Request() ;
+        $this->request = $request;
     }
-
 
     public function get($path, $callback)
     {
