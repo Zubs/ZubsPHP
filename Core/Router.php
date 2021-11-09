@@ -23,9 +23,24 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    public function layoutContent() {
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/layouts/app.php";
+        return ob_get_clean();
+    }
+
+    public function renderOnlyView(string $view) {
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/$view.php";
+        return ob_get_clean();
+    }
+
     public function renderView(string $view)
     {
-        include_once __DIR__ . "/../views/$view.php";
+        $layoutContent = $this->layoutContent();
+        $viewContent = $this->renderOnlyView($view);
+
+        return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
     public function resolve()
@@ -41,3 +56,5 @@ class Router
         return call_user_func($callback);
     }
 }
+
+// dirname(__DIR__);
