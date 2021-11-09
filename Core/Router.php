@@ -25,6 +25,11 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
+    public function post(string $path, $callback)
+    {
+        $this->routes['post'][$path] = $callback;
+    }
+
     public function layoutContent() {
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/app.php";
@@ -53,7 +58,7 @@ class Router
 
         if ($callback === false) {
             $this->response->setStatusCode(404);
-            return '404 | Not Found';
+            return $this->renderView('404');
         }
 
         if (is_string($callback)) return $this->renderView($callback);
