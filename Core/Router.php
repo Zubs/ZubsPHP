@@ -18,9 +18,14 @@ class Router
         $this->request = $request;
     }
 
-    public function get($path, $callback)
+    public function get(string $path, $callback)
     {
         $this->routes['get'][$path] = $callback;
+    }
+
+    public function renderView(string $view)
+    {
+        include_once __DIR__ . "/../views/$view.php";
     }
 
     public function resolve()
@@ -29,11 +34,10 @@ class Router
         $method = $this->request->getMethod();
         $callback = $this->routes[$method][$path] ?? false;
 
-        if ($callback === false) {
-            echo '404 | Not Found';
-            exit();
-        }
+        if ($callback === false) return '404 | Not Found';
 
-        echo call_user_func($callback);
+        if (is_string($callback)) return $this->renderView($callback);
+
+        return call_user_func($callback);
     }
 }
