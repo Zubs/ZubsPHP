@@ -16,7 +16,10 @@ class Application
     public Response $response;
     public static Application $App;
 
-    public function __construct($rootPath)
+    /**
+     * @param string $rootPath
+     */
+    public function __construct(string $rootPath)
     {
         self::$ROOT_DIR = $rootPath;
         self::$App = $this;
@@ -25,6 +28,9 @@ class Application
         $this->router = new Router($this->request, $this->response);
     }
 
+    /**
+     * Resolve app routes
+     */
     public function run()
     {
         echo $this->router->resolve();

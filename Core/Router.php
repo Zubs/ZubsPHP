@@ -14,34 +14,61 @@ class Router
     public Response $response;
     protected array $routes = [];
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     */
     public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
         $this->response = $response;
     }
 
+    /**
+     * @param string $path Request path
+     * @param $callback
+     */
     public function get(string $path, $callback)
     {
         $this->routes['get'][$path] = $callback;
     }
 
+    /**
+     * @param string $path Request path
+     * @param $callback
+     */
     public function post(string $path, $callback)
     {
         $this->routes['post'][$path] = $callback;
     }
 
-    public function layoutContent() {
+    /**
+     * Loads the app layout
+     * @return bool|string
+     */
+    public function layoutContent(): bool | string
+    {
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/app.php";
         return ob_get_clean();
     }
 
-    public function renderOnlyView(string $view) {
+    /**
+     * Loads view content
+     * @param string $view View to be parsed
+     * @return bool|string
+     */
+    public function renderOnlyView(string $view): bool | string
+    {
         ob_start();
         include_once Application::$ROOT_DIR . "/views/$view.php";
         return ob_get_clean();
     }
 
+    /**
+     * Parses view into layout
+     * @param string $view View to be parsed
+     */
     public function renderView(string $view)
     {
         $layoutContent = $this->layoutContent();
@@ -50,6 +77,9 @@ class Router
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
+    /**
+     * Process route response
+     */
     public function resolve()
     {
         $path = $this->request->getPath();
